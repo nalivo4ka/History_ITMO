@@ -3,16 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мои проекты</title>
+    <title>Работы по истории | Ваше Имя</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
-        h1 { margin-bottom: 2rem; }
-        a { display: block; margin: 1rem; padding: 1rem 2rem; background-color: #0366d6; color: white; text-decoration: none; border-radius: 5px; font-size: 1.2rem; }
-        a:hover { background-color: #0056b3; }
+        /* Подключаем красивые шрифты от Google */
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap');
+
+        /* Общие стили */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        /* Стили для "шапки" */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 1.5rem;
+        }
+
+        header h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-top: 0.5rem;
+        }
+
+        /* Сетка для карточек с работами */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Стили для каждой карточки */
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: #34495e;
+        }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            flex-grow: 1; /* Этот трюк заставляет кнопку "прилипнуть" к низу */
+            margin-bottom: 1.5rem;
+        }
+
+        .card a.button {
+            display: block;
+            text-align: center;
+            padding: 0.8rem 1rem;
+            background-color: #3498db;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            margin-top: auto; /* А этот помогает кнопке оставаться внизу */
+            transition: background-color 0.2s ease;
+        }
+
+        .card a.button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Подвал сайта */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin-top: 3rem;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Список моих сайтов</h1>
-    <a href="Aleksandr_Nevsky/">Перейти на Сайт 1</a>
+
+    <div class="container">
+        <header>
+            <h1>Работы по истории</h1>
+            <p>Выполнил(а) студент(ка) Фамилия Имя</p>
+        </header>
+
+        <main class="projects-grid">
+            
+            <!-- Карточка 1: Ваша работа про Александра Невского -->
+            <div class="card">
+                <div class="card-content">
+                    <h2>Инфографика: Александр Невский</h2>
+                    <p>
+                        Интерактивная инфографика о жизни, политической деятельности и ключевых сражениях князя Александра Невского.
+                    </p>
+                    <a href="Aleksandr_Nevsky/" class="button">Смотреть проект</a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    
+    <footer>
+        <p>© 2024, Ваше Имя</p>
+    </footer>
+
 </body>
 </html>
