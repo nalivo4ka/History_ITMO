@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инфографика: Смутное Время (Финальная интерактивная версия)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
+
+        :root {
+            --primary-color: #D4AF37; /* Gold */
+            --background-color: #1a1a1a;
+            --container-bg: #262626;
+            --card-bg: #2f2f2f;
+            --border-color: #444;
+            --text-color: #e0e0e0;
+            --text-muted: #b0b0b0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--container-bg);
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        header h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 3em;
+            font-weight: 700;
+        }
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2em;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 40px 0 30px 0;
+            border-bottom: 1px solid #555;
+            padding-bottom: 15px;
+        }
+        
+        /* Interactive Term Highlighting */
+        .interactive-term {
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.5);
+            position: relative;
+        }
+
+        /* Tooltip */
+        #tooltip {
+            position: absolute;
+            background-color: #202020;
+            color: var(--text-color);
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--primary-color);
+            font-size: 0.9em;
+            line-height: 1.5;
+            max-width: 300px;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* Scroll Animations */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Causes Section */
+        .causes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            text-align: center;
+        }
+        .cause-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cause-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .cause-card .icon {
+            font-size: 3.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .cause-card h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.4em;
+            margin: 0 0 10px 0;
+            color: #f0f0f0;
+        }
+        
+        /* Interactive Timeline Section */
+        .timeline-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+        }
+        .timeline-nav {
+            flex: 0 0 150px;
+            border-right: 2px solid var(--primary-color);
+        }
+        .timeline-nav button {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #555;
+            color: var(--text-muted);
+            padding: 12px 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .timeline-nav button:hover {
+            background: var(--primary-color);
+            color: var(--background-color);
+            border-color: var(--primary-color);
+        }
+        .timeline-nav button.active {
+            background: var(--primary-color);
+            color: var(--background-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+        .timeline-content {
+            flex-grow: 1;
+            padding-left: 20px;
+            transition: opacity 0.5s ease-in-out;
+            min-height: 320px;
+        }
+        .timeline-content.fade {
+            opacity: 0;
+        }
+        .timeline-content h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.8em;
+            margin-top: 0;
+            color: #f0f0f0;
+        }
+        .timeline-content ul { padding-left: 0; list-style-type: none; }
+        .timeline-content li { margin-bottom: 10px; padding-left: 25px; position: relative; }
+        .timeline-content .icon { color: var(--primary-color); position: absolute; left: 0; top: 5px; }
+
+        /* Outcomes Section */
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .outcome-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+        .outcome-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-color: var(--primary-color);
+        }
+        .outcome-card .icon {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+        .outcome-card:hover .icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        .outcome-card h3 {
+            font-family: 'Merriweather', serif;
+            margin: 0 0 10px 0;
+            color: #f0f0f0;
+        }
+
+        @media (max-width: 850px) {
+            .timeline-container { flex-direction: column; }
+            .timeline-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-right: none; border-bottom: 2px solid var(--primary-color); padding-right: 0; padding-bottom: 15px; flex-basis: auto; width: 100%;}
+            .timeline-nav button { text-align: center; }
+            .timeline-content { padding-left: 0; padding-top: 15px; min-height: 280px; }
+            header h1 { font-size: 2.2em; }
+            .section-title { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div id="tooltip"></div>
+    <div class="container">
+        <header>
+            <h1>Смутное Время</h1>
+        </header>
+
+        <main>
+            <section id="causes" class="fade-in-section">
+                <h2 class="section-title">Причины Смуты</h2>
+                <div class="causes-grid">
+                    <div class="cause-card">
+                        <div class="icon">👑</div>
+                        <h3>Династический кризис</h3>
+                        <p>Пресечение правящей династии <span class="interactive-term" data-tooltip="Правили на Руси со времен призвания варягов. Их власть считалась священной и данной Богом.">Рюриковичей</span> после смерти бездетного царя Федора Ивановича породило вакуум власти и непонимание, кто должен править дальше.</p>
+                    </div>
+                    <div class="cause-card">
+                        <div class="icon">🌾</div>
+                        <h3>Социально-экономический кризис</h3>
+                        <p>Страна была разорена. Страшный <span class="interactive-term" data-tooltip="Вызван природными катаклизмами (извержение вулкана в Перу), приведшими к похолоданию. Продолжался несколько лет, истощив все запасы.">голод 1601–1603</span> годов довел народ до отчаяния и укрепил веру, что правящий царь "ненастоящий".</p>
+                    </div>
+                    <div class="cause-card">
+                        <div class="icon">⚔️</div>
+                        <h3>Иностранная интервенция</h3>
+                        <p><span class="interactive-term" data-tooltip="Главные геополитические соперники России на западе в тот период.">Речь Посполитая и Швеция</span> воспользовались слабостью России, чтобы решить свои задачи, поддерживая самозванцев и ведя прямые военные действия для захвата территорий.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="chronology" class="fade-in-section">
+                <h2 class="section-title">Хронология событий</h2>
+                <div class="timeline-container">
+                    <div class="timeline-nav">
+                        <button class="timeline-btn active" data-target="1598-1605">1598-1605</button>
+                        <button class="timeline-btn" data-target="1605-1606">1605-1606</button>
+                        <button class="timeline-btn" data-target="1606-1610">1606-1610</button>
+                        <button class="timeline-btn" data-target="1610-1611">1610-1611</button>
+                        <button class="timeline-btn" data-target="1611-1612">1611-1612</button>
+                        <button class="timeline-btn" data-target="1613">1613</button>
+                    </div>
+                    <div class="timeline-content" id="timeline-content-area">
+                        <!-- Content will be injected by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="outcomes" class="fade-in-section">
+                <h2 class="section-title">Итоги Смуты</h2>
+                <div class="outcomes-grid">
+                    <div class="outcome-card">
+                        <div class="icon">🏛️</div>
+                        <h3>Новая династия</h3>
+                        <p>Избрание <span class="interactive-term" data-tooltip="16-летний юноша, ставший компромиссной фигурой для всех боярских группировок.">Михаила Романова</span> положило конец династическому кризису и основало династию, правившую более 300 лет.</p>
+                    </div>
+                    <div class="outcome-card">
+                        <div class="icon">🛡️</div>
+                        <h3>Централизация власти</h3>
+                        <p>Потрясения Смуты показали обществу необходимость сильной центральной власти для сохранения единства и независимости страны.</p>
+                    </div>
+                    <div class="outcome-card">
+                        <div class="icon">📉</div>
+                        <h3>Огромные потери</h3>
+                        <p>Страна была разорена, население сократилось. Россия потеряла <span class="interactive-term" data-tooltip="Стратегически важная крепость, захваченная поляками после 20-месячной героической осады.">Смоленск</span> (отошел Речи Посполитой) и выход к Балтийскому морю.</p>
+                    </div>
+                    <div class="outcome-card">
+                        <div class="icon">🤝</div>
+                        <h3>Рост самосознания</h3>
+                        <p>Выход из кризиса стал возможен благодаря консолидации всего народа. Освобождение Москвы стало символом национального единства.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineData = {
+                '1598-1605': {
+                    title: 'Конец династии и первый избранный царь',
+                    content: `
+                        <p>После смерти бездетного царя <strong>Федора Ивановича</strong> пресеклась династия Рюриковичей. Впервые в истории на Земском соборе был избран <span class="interactive-term" data-tooltip="Талантливый боярин, сосредоточивший в своих руках огромную власть еще при жизни царя Федора.">Борис Годунов</span>.</p>
+                        <ul>
+                            <li><span class="icon">📜</span><strong>Политика Годунова:</strong> Он стремился стабилизировать страну, раздавая жалованье дворянам, облегчая налоги для простого народа, поощряя торговлю и просвещение, отправляя дворянских детей на учебу за рубеж. Добился возвращения крепостей <span class="interactive-term" data-tooltip="Ивангород, Ям, Копорье, Карела. Важные форпосты на Балтийском побережье.">от Швеции</span>.</li>
+                            <li><span class="icon">🌾</span><strong>Великий голод (1601-1603):</strong> Все усилия царя были перечеркнуты страшным голодом. Годунов открывал царские закрома, организовывал общественные работы и казнил спекулянтов, но это лишь усугубило хаос. Народ счел голод Божьей карой за "ненастоящего" царя.</li>
+                        </ul>
+                    `
+                },
+                '1605-1606': {
+                    title: 'Год самозванца',
+                    content: `
+                        <p>На фоне народного недовольства появился самозванец, выдававший себя за царевича Дмитрия, — <span class="interactive-term" data-tooltip="Образованный инок Чудова монастыря, служивший секретарем у патриарха Иова.">Григорий Отрепьев</span>. </p>
+                        <ul>
+                            <li><span class="icon">🇵🇱</span>Получив тайную поддержку в <span class="interactive-term" data-tooltip="Польско-литовское государство, главный соперник России на западе.">Речи Посполитой</span>, он двинулся на Москву. Многие города и даже царские войска переходили на его сторону без боя.</li>
+                            <li><span class="icon">👑</span>После внезапной смерти Годунова и убийства его сына, Лжедмитрий I триумфально вошел в столицу и был венчан на царство.</li>
+                             <li><span class="icon">💔</span><strong>Падение:</strong> Был свергнут и жестоко убит в результате заговора во главе с <span class="interactive-term" data-tooltip="Представитель знатного княжеского рода, будущий царь.">Василием Шуйским</span>. Поводом к бунту послужила его свадьба на католичке <span class="interactive-term" data-tooltip="Дочь богатого польского магната. Ее свадьба с Лжедмитрием и поведение поляков стали поводом для бунта.">Марине Мнишек</span> и вызывающее поведение поляков.</li>
+                        </ul>
+                    `
+                },
+                '1606-1610': {
+                    title: 'Гражданская война и Двоевластие',
+                    content: `
+                        <p>На престол взошел боярский царь <span class="interactive-term" data-tooltip="Был 'выкликнут' царем на Красной площади своими сторонниками, его власть была слабой и оспаривалась с самого начала.">Василий Шуйский</span>. Этот период — пик внутреннего раскола.</p>
+                        <ul>
+                            <li><span class="icon">🔥</span><strong>Восстание Болотникова:</strong> Началась полномасштабная гражданская война. В восстании <span class="interactive-term" data-tooltip="Возглавил мощное восстание, в котором участвовали все слои общества. Был разбит, взят в плен и казнен.">Ивана Болотникова</span> участвовали все слои общества, от холопов до недовольных бояр.</li>
+                            <li><span class="icon">🎭</span><strong>Двоевластие:</strong> Появился <span class="interactive-term" data-tooltip="Личность этого самозванца неизвестна. Создал альтернативный центр власти в селе Тушино под Москвой.">Лжедмитрий II ("Тушинский вор")</span>. Страна раскололась: в Москве был один царь, а в подмосковном Тушине — другой, со своей думой, приказами и армией.</li>
+                            <li><span class="icon">🇸🇪</span><strong>Интервенция:</strong> В отчаянии Шуйский заключил союз со <span class="interactive-term" data-tooltip="Враг Речи Посполитой. Союз с ней дал полякам повод для открытого вторжения в Россию.">Швецией</span>, отдав им часть территории за наемников. Это спровоцировало открытую польскую интервенцию в 1609 году.</li>
+                        </ul>
+                    `
+                },
+                '1610-1611': {
+                    title: 'Коллапс власти и Семибоярщина',
+                    content: `
+                        <p>После сокрушительного поражения русских войск от поляков, <span class="interactive-term" data-tooltip="Представитель знатного княжеского рода, возглавил заговор против Лжедмитрия I. Его власть была очень слабой.">Василий Шуйский</span> был свергнут и насильно пострижен в монахи. Власть захватило правительство из семи бояр — <span class="interactive-term" data-tooltip="Правительство из семи самых знатных бояр, которое впустило поляков в Москву и присягнуло королевичу Владиславу.">Семибоярщина</span>.</p>
+                        <ul>
+                            <li><span class="icon">📜</span>Бояре пошли на национальное предательство и пригласили на русский престол польского королевича <span class="interactive-term" data-tooltip="Сын польского короля Сигизмунда III. Должен был принять православие, но его отец хотел полного подчинения России.">Владислава</span>.</li>
+                            <li><span class="icon">🚪</span>В Москву был впущен польский гарнизон. Страна оказалась на краю потери независимости. Духовным лидером сопротивления стал <span class="interactive-term" data-tooltip="Патриарх, который отказался сотрудничать с интервентами и призывал народ к борьбе. Был заморен поляками голодом в темнице.">Патриарх Гермоген</span>.</li>
+                        </ul>
+                    `
+                },
+                '1611-1612': {
+                    title: 'Народное единство и освобождение',
+                    content: `
+                        <p>В ответ на предательство и интервенцию по всей стране началось освободительное движение, ведомое не царями, а народом.</p>
+                        <ul>
+                            <li><span class="icon">❌</span><strong>Первое ополчение (1611):</strong> Возглавлялось <span class="interactive-term" data-tooltip="Один из лидеров Первого ополчения, убит казаками из-за разногласий.">Прокопием Ляпуновым</span>, Трубецким и Заруцким. Осадило Москву, но распалось из-за внутренних конфликтов между дворянами и казаками.</li>
+                            <li><span class="icon">✅</span><strong>Второе ополчение (1611-1612):</strong> Было создано в Нижнем Новгороде по инициативе земского старосты <span class="interactive-term" data-tooltip="Нижегородский купец, 'финансовый директор' Второго ополчения, организовал сбор средств на войско.">Кузьмы Минина</span> и под военным руководством князя <span class="interactive-term" data-tooltip="Опытный воевода, возглавил военные силы Второго ополчения и руководил освобождением Москвы.">Дмитрия Пожарского</span>.</li>
+                             <li><span class="icon">⚔️</span>Двигаясь вверх по Волге, ополчение собирало силы и средства. 26 октября 1612 года, объединившись с остатками Первого ополчения, они <strong>освободили Москву</strong>.</li>
+                        </ul>
+                    `
+                },
+                '1613': {
+                    title: 'Конец Смуты и новая династия',
+                    content: `
+                        <p>После освобождения Москвы был созван <span class="interactive-term" data-tooltip="Собор с представителями всех земель и сословий для решения важнейших государственных вопросов.">Земский собор</span> для избрания нового, законного царя.</p>
+                        <ul>
+                             <li><span class="icon">🕊️</span>Выбор пал на 16-летнего <span class="interactive-term" data-tooltip="Его род был связан с первой женой Ивана Грозного, Анастасией Романовой, что давало ему формальную связь с прежней династией.">Михаила Романова</span> как на компромиссную фигуру, устраивавшую многие боярские группировки.</li>
+                             <li><span class="icon">🗣️</span>Знатные бояре надеялись, что смогут легко управлять юным и неопытным царем, говоря знаменитую фразу: <span class="interactive-term" data-tooltip="Фраза, отражающая надежды боярской элиты на то, что новый царь будет послушным их воле.">"Миша молод, разумом еще не дошел, и нам будет поваден"</span>.</li>
+                        </ul>
+                        <p>Его избрание считается формальным окончанием Смутного времени и началом правления династии Романовых.</p>
+                    `
+                }
+            };
+
+            const timelineNav = document.querySelector('.timeline-nav');
+            const timelineContentArea = document.getElementById('timeline-content-area');
+            const buttons = document.querySelectorAll('.timeline-btn');
+            const tooltip = document.getElementById('tooltip');
+
+            function updateContent(target) {
+                const data = timelineData[target];
+                timelineContentArea.innerHTML = `<h3>${data.title}</h3>${data.content}`;
+                addTooltipEvents();
+            }
+
+            timelineNav.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON') return;
+                const selectedTarget = e.target.dataset.target;
+                buttons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                timelineContentArea.classList.add('fade');
+                setTimeout(() => {
+                    updateContent(selectedTarget);
+                    timelineContentArea.classList.remove('fade');
+                }, 300);
+            });
+
+            function addTooltipEvents() {
+                document.querySelectorAll('.interactive-term').forEach(term => {
+                    term.addEventListener('mousemove', e => {
+                        tooltip.style.visibility = 'visible';
+                        tooltip.style.opacity = '1';
+                        tooltip.innerHTML = term.dataset.tooltip;
+                        tooltip.style.left = `${e.pageX + 15}px`;
+                        tooltip.style.top = `${e.pageY + 15}px`;
+                    });
+                    term.addEventListener('mouseleave', () => {
+                        tooltip.style.visibility = 'hidden';
+                        tooltip.style.opacity = '0';
+                    });
+                });
+            }
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
+
+            // Initial load
+            updateContent('1598-1605');
+        });
+    </script>
+</body>
+</html>
