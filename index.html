@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Работы по истории | Ваше Имя</title>
+    <title>Работы по истории | Финальная версия</title>
     <style>
-        /* Подключаем красивые шрифты от Google */
-        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap');
+        /* Подключаем шрифты, как в проектах */
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
 
-        /* Общие стили */
+        /* Общие стили в темной теме */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #1a1a1a; /* Глубокий темный фон */
+            color: #e0e0e0; /* Светлый текст */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -26,25 +26,19 @@
             flex: 1;
         }
 
-        /* Стили для "шапки" */
+        /* Стили для "шапки" в золотом акценте */
         header {
             text-align: center;
             margin-bottom: 3rem;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 3px solid #D4AF37; /* Золотой акцент */
             padding-bottom: 1.5rem;
         }
 
         header h1 {
             font-family: 'Merriweather', serif;
             font-size: 2.8rem;
-            color: #2c3e50;
+            color: #D4AF37; /* Золотой заголовок */
             margin: 0;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            margin-top: 0.5rem;
         }
 
         /* Сетка для карточек с работами */
@@ -54,20 +48,22 @@
             gap: 2rem;
         }
 
-        /* Стили для каждой карточки */
+        /* Стили для каждой карточки в темной теме */
         .card {
-            background-color: #ffffff;
+            background-color: #2f2f2f; /* Фон карточки */
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #444;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            border-color: #D4AF37; /* Золотая рамка при наведении */
         }
 
         .card-content {
@@ -82,40 +78,43 @@
             font-size: 1.5rem;
             margin-top: 0;
             margin-bottom: 0.75rem;
-            color: #34495e;
+            color: #D4AF37; /* Золотой подзаголовок */
         }
 
         .card p {
             font-size: 1rem;
             line-height: 1.6;
-            flex-grow: 1; /* Этот трюк заставляет кнопку "прилипнуть" к низу */
+            flex-grow: 1;
             margin-bottom: 1.5rem;
+            color: #b0b0b0; /* Приглушенный текст */
         }
 
         .card a.button {
             display: block;
             text-align: center;
             padding: 0.8rem 1rem;
-            background-color: #3498db;
-            color: #ffffff;
+            background-color: #D4AF37; /* Золотая кнопка */
+            color: #1a1a1a; /* Темный текст на кнопке для контраста */
             text-decoration: none;
             border-radius: 5px;
-            font-weight: 500;
-            margin-top: auto; /* А этот помогает кнопке оставаться внизу */
-            transition: background-color 0.2s ease;
+            font-weight: 700; /* Более жирный шрифт */
+            margin-top: auto;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .card a.button:hover {
-            background-color: #2980b9;
+            background-color: #e0b841; /* Более светлый золотой при наведении */
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
         
-        /* Подвал сайта */
+        /* Подвал сайта в темной теме */
         footer {
             text-align: center;
             padding: 1.5rem;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #262626; /* Фон как у контейнера в проектах */
+            color: #888;
             margin-top: 3rem;
+            border-top: 3px solid #D4AF37; /* Золотая линия сверху */
         }
 
     </style>
@@ -141,9 +140,9 @@
 
             <div class="card">
                 <div class="card-content">
-                    <h2>Инфографика: Смута</h2>
+                    <h2>Инфографика: Смутное время</h2>
                     <p>
-                        Интерактивная инфографика о Смутном времени - одном из наиболее значительных династических кризисов в царской России.
+                        Детальная интерактивная инфографика об одном из наиболее значительных династических и государственных кризисов в истории России.
                     </p>
                     <a href="Smuta/" class="button">Смотреть проект</a>
                 </div>
@@ -151,6 +150,10 @@
 
         </main>
     </div>
+    
+    <footer>
+        Выполнил: Райков Илья Алексеевич | J3210
+    </footer>
 
 </body>
 </html>
