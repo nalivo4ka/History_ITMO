@@ -1,0 +1,279 @@
+/* --- General Styling --- */
+body {
+    font-family: 'Merriweather', serif;
+    background-color: rgba(250, 240, 216, 0.92);
+    color: #000000;
+    margin: 0;
+    padding: 20px;
+    background-attachment: fixed;
+    opacity: 0;
+    animation: fadeInPage 1s ease-out forwards;
+}
+
+@keyframes fadeInPage {
+    to { opacity: 1; }
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    background-color: rgba(250, 240, 216, 0.92); 
+    background-image: url('assets/newspaper_texture.jpg');
+    box-shadow: 0 0 25px rgba(0,0,0,0.35);
+    border: 3px solid #d2b48c;
+    padding: 30px;
+}
+
+/* --- Header --- */
+.header {
+    text-align: center;
+    border-bottom: 4px double #000000;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-family: 'Marck Script', cursive;
+    font-size: 5em;
+    margin: 0;
+    color: #961605;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    /* ДОБАВЛЕНО: Плавный переход для анимации при наведении */
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* ДОБАВЛЕНО: Анимация "живого" заголовка */
+.header h1:hover {
+    transform: translateY(-3px);
+    text-shadow: 4px 6px 8px rgba(0,0,0,0.15);
+}
+
+.header .subtitle, .header .date-line {
+    font-style: italic;
+    color: #000000;
+}
+
+/* --- Layout --- */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+}
+
+.multi-column-block {
+    column-count: 1;
+    column-rule: 1px solid #d2b48c;
+}
+
+.full-width-section {
+    grid-column: 1 / -1;
+    margin-top: 30px;
+}
+
+
+/* --- Articles --- */
+.article {
+    margin: 0; 
+    break-inside: avoid-column;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    padding-bottom: 20px;
+}
+
+.article.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.article h2, .article h3 {
+    font-weight: 700;
+    color: #961605;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+.article h2 { font-size: 1.8em; }
+.article h3 { font-size: 1.4em; }
+
+.article p {
+    line-height: 1.7;
+    text-align: justify;
+    margin-bottom: 1em;
+}
+
+.article p::first-letter {
+    font-size: 3.5em;
+    float: left;
+    line-height: 1;
+    margin: 0.05em 0.1em 0 0;
+    color: #961605;
+    font-weight: bold;
+    /* ДОБАВЛЕНО: Плавный переход для анимации при наведении */
+    transition: transform 0.3s ease;
+}
+
+/* ДОБАВЛЕНО: Анимация "живой" буквицы */
+.article p:hover::first-letter {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.centered-image {
+    display: block;
+    width: 100%;
+    margin: 20px auto;
+    border: 5px solid #d2b48c;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.15);
+    filter: sepia(0.6);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.centered-image:hover {
+    transform: scale(1.03) rotate(1deg);
+    box-shadow: 8px 8px 15px rgba(0,0,0,0.25);
+}
+
+/* --- Pamphlet --- */
+.pamphlet {
+    border: 4px dotted #000000;
+    padding: 20px;
+    font-style: italic;
+}
+.pamphlet h3, .pamphlet h4 {
+    font-style: normal;
+    text-align: center;
+    margin-top: 0;
+}
+.pamphlet .signature {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* --- Footer & Seal --- */
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 60px;
+    border-top: 3px solid #000000;
+}
+
+#seal-prompt {
+    position: relative; 
+    display: inline-block;
+    padding: 30px 40px; 
+    border: 4px dashed #000000;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    margin-bottom: 40px
+}
+
+#seal-prompt .seal-text {
+    font-style: italic;
+    color: #961605;
+    transition: opacity 0.3s ease-out;
+}
+
+#seal-image {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+#seal-prompt:not(.stamped):hover {
+    border-color: transparent;
+}
+#seal-prompt:not(.stamped):hover .seal-text {
+    opacity: 0;
+}
+#seal-prompt:not(.stamped):hover #seal-image {
+    opacity: 0.4;
+}
+
+#seal-prompt.stamped {
+    border-color: transparent;
+    background-color: transparent;
+    cursor: default;
+}
+
+#seal-prompt.stamped .seal-text {
+    opacity: 0;
+}
+
+#seal-prompt.stamped #seal-image {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); 
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) {
+    .main-content {
+        grid-template-columns: 1fr; /* Колонки встают друг под друга */
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 3em;
+    }
+    .container {
+        padding: 15px;
+    }
+}
+
+
+/* --- ДОБАВЛЕННЫЕ СТИЛИ ДЛЯ НОВЫХ ФУНКЦИЙ --- */
+
+/* 1. Стили для интерактивных сносок (тултипов) */
+.tooltip {
+    color: #961605;
+    cursor: help;
+    position: relative;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 250px;
+    padding: 10px;
+    background-color: #fdf5e6;
+    border: 1px solid #d2b48c;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #000000;
+    font-size: 0.9em;
+    line-height: 1.5;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 2. Мигающий курсор для эффекта печати */
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: #000000;
+    margin-left: 2px;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
