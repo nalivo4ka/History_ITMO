@@ -1,0 +1,430 @@
+/* --- Импорт шрифтов --- */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&display=swap'); /* Шрифт для цитат */
+
+/* --- Основные стили --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px; /* Увеличили ширину */
+    margin: 0 auto;
+    padding: 2rem;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- Шапка --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #D4AF37;
+    padding-bottom: 1.5rem;
+}
+
+header h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.2rem;
+    color: #D4AF37;
+    margin: 0;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    border-color: #D4AF37;
+    color: #D4AF37;
+}
+
+/* --- Плеер Презентации --- */
+.presentation-player {
+    background-color: #262626; /* Чуть темнее фон */
+    border-radius: 15px;
+    border: 1px solid #444;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    overflow: hidden;
+    position: relative;
+    min-height: 750px; /* Сделали плеер выше */
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Вкладки --- */
+.section-tabs {
+    display: flex;
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #444;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 1.2rem;
+    color: #888;
+    font-family: 'Merriweather', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 4px solid transparent;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: #e0e0e0;
+    background-color: rgba(255,255,255,0.05);
+}
+
+.tab-btn.active {
+    color: #D4AF37;
+    border-bottom-color: #D4AF37;
+    background-color: rgba(212, 175, 55, 0.1);
+}
+
+/* --- Область слайдов --- */
+.slides-container {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #333 0%, #262626 100%); /* Легкий градиент фона */
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 5rem; /* Отступы под стрелки */
+    box-sizing: border-box;
+    visibility: hidden;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+}
+
+/* Анимация появления контента */
+.slide.active .photo-card {
+    animation: slideInLeft 0.8s ease-out forwards;
+}
+.slide.active .text-area {
+    animation: slideInRight 0.8s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+
+/* --- Контент слайда --- */
+.slide-content {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    max-width: 100%;
+    width: 100%;
+    align-items: flex-start; /* Выравнивание по верху */
+}
+
+/* Фото-карточка (Полароид стиль) */
+.photo-card {
+    flex: 0 0 350px; /* Фиксированная ширина фото */
+    background-color: #f0f0f0;
+    padding: 10px 10px 30px 10px; /* Большой отступ снизу как у Polaroid */
+    border-radius: 4px;
+    transform: rotate(-2deg); /* Легкий наклон для "живости" */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+
+.photo-card:hover {
+    transform: rotate(0deg) scale(1.02);
+    z-index: 5;
+}
+
+.photo-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: sepia(20%) contrast(1.1); /* Эффект старого фото */
+    border: 1px solid #ccc;
+}
+
+.photo-caption {
+    margin-top: 15px;
+    font-family: 'Merriweather', serif;
+    color: #333; /* Темный текст на белой карточке */
+    text-align: center;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Текстовая зона */
+.text-area {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4); /* Подложка под текст */
+    padding: 2rem;
+    border-radius: 10px;
+    border-left: 4px solid #D4AF37;
+    backdrop-filter: blur(5px);
+}
+
+/* Заголовок со счетчиком */
+.slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #555;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+.slide-header h2 {
+    font-family: 'Merriweather', serif;
+    color: #D4AF37;
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+.local-counter {
+    font-family: 'Roboto', sans-serif;
+    color: #888;
+    font-size: 0.9rem;
+    background: #333;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.text-area h3 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.text-area p {
+    line-height: 1.8;
+    color: #ddd;
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+}
+
+/* Цитата */
+.slide-quote {
+    margin: 2rem 0 1rem 0;
+    padding-left: 20px;
+    border-left: 3px solid #D4AF37;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: #e0c060;
+    background: rgba(212, 175, 55, 0.05);
+    padding: 15px;
+    border-radius: 0 10px 10px 0;
+}
+
+/* --- Стрелки навигации --- */
+.nav-area {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.prev-area {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.8), transparent);
+    justify-content: flex-start;
+    padding-left: 30px;
+}
+
+.next-area {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+    justify-content: flex-end;
+    padding-right: 30px;
+}
+
+.nav-area:hover {
+    opacity: 1;
+}
+
+.nav-icon {
+    color: #D4AF37;
+    font-size: 4rem;
+    text-shadow: 0 0 20px #000;
+}
+
+/* Адаптивность */
+@media (max-width: 900px) {
+    .slide {
+        padding: 1rem;
+    }
+    .slide-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .photo-card {
+        flex: 0 0 auto;
+        width: 250px;
+        transform: rotate(0);
+        margin-bottom: 2rem;
+    }
+    .text-area {
+        padding: 1.5rem;
+    }
+    .slide-header h2 {
+        font-size: 1.5rem;
+    }
+    .nav-area {
+        width: 15%;
+    }
+    .nav-icon {
+        font-size: 2.5rem;
+    }
+}
+
+.tooltip {
+    position: relative;
+    cursor: help;
+    color: #D4AF37; /* Слово сразу золотое */
+    border-bottom: none; /* Убрали подчеркивание */
+    font-weight: 500; /* Чуть жирнее обычного текста */
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.tooltip:hover {
+    color: #fff; /* При наведении становится белым (для контраста) */
+}
+
+/* Само всплывающее окошко */
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 135%; /* Чуть выше */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    width: 260px;
+    background-color: #1a1a1a; /* Темный фон */
+    color: #e0e0e0;
+    border: 1px solid #D4AF37; /* Золотая рамка */
+    padding: 12px 16px;
+    border-radius: 6px;
+    
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+    z-index: 100;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+/* Стрелочка вниз от подсказки */
+.tooltip::before {
+    content: '';
+    position: absolute;
+    
+    /* Начальная позиция (скрыта) */
+    bottom: 125%; 
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Рисуем треугольник */
+    border-width: 6px;
+    border-style: solid;
+    /* Цвет: Сверху золотой, остальные прозрачные -> Треугольник вниз */
+    border-color: #D4AF37 transparent transparent transparent;
+    
+    /* Обязательно для корректной отрисовки треугольника */
+    width: 0;
+    height: 0;
+    
+    /* Выводим поверх блока подсказки */
+    z-index: 101; 
+    
+    /* Скрываем */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    
+    /* Чтобы мышь сквозь нее "видела" текст */
+    pointer-events: none; 
+}
+
+/* Показ при наведении */
+.tooltip:hover::before {
+    opacity: 1;
+    visibility: visible;
+    /* Опускаем чуть ниже, чтобы касалась текста */
+    bottom: 115%; 
+}
+
+/* Показ самого блока (на всякий случай обновите и этот кусок, чтобы цифры совпадали) */
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    bottom: 125%; /* Блок висит чуть выше стрелки */
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .tooltip::after {
+        width: 220px;
+        left: auto;
+        right: -20px;
+        transform: none;
+    }
+    .tooltip::before {
+        left: auto;
+        right: 10px;
+        transform: none;
+    }
+}
